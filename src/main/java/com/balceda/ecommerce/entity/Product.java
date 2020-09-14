@@ -13,12 +13,7 @@ import java.util.Date;
 @Table(name = "product")
 @Getter
 @Setter
-public class Product {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class Product extends JpaEntity {
 
     @Column(name = "sku")
     private String sku;

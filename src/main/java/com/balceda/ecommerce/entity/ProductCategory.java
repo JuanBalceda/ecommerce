@@ -10,12 +10,7 @@ import java.util.Set;
 @Table(name = "product_category")
 @Getter
 @Setter
-public class ProductCategory {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+public class ProductCategory extends JpaEntity {
 
     @Column(name = "category_name")
     private String categoryName;
