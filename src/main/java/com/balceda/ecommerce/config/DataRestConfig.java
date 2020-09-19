@@ -1,7 +1,6 @@
 package com.balceda.ecommerce.config;
 
-import com.balceda.ecommerce.entity.Product;
-import com.balceda.ecommerce.entity.ProductCategory;
+import com.balceda.ecommerce.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
@@ -26,17 +25,20 @@ public class DataRestConfig implements RepositoryRestConfigurer {
 
         HttpMethod[] unsupportedActions = {HttpMethod.POST, HttpMethod.PUT, HttpMethod.DELETE};
 
-        config.getExposureConfiguration()
-                .forDomainType(Product.class)
-                .withItemExposure(((metadata, httpMethods) -> httpMethods.disable(unsupportedActions)))
-                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedActions));
-
-        config.getExposureConfiguration()
-                .forDomainType(ProductCategory.class)
-                .withItemExposure(((metadata, httpMethods) -> httpMethods.disable(unsupportedActions)))
-                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedActions));
+        disableHttpMethods(config, unsupportedActions, Product.class);
+        disableHttpMethods(config, unsupportedActions, ProductCategory.class);
+        disableHttpMethods(config, unsupportedActions, Country.class);
+        disableHttpMethods(config, unsupportedActions, State.class);
 
         exposeIds(config);
+    }
+
+    private void disableHttpMethods(RepositoryRestConfiguration config, HttpMethod[] unsupportedActions, Class<? extends JpaEntity> clazz) {
+
+        config.getExposureConfiguration()
+                .forDomainType(clazz)
+                .withItemExposure(((metadata, httpMethods) -> httpMethods.disable(unsupportedActions)))
+                .withCollectionExposure((metadata, httpMethods) -> httpMethods.disable(unsupportedActions));
     }
 
     private void exposeIds(RepositoryRestConfiguration config) {
